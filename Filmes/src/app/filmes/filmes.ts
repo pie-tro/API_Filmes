@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FilmesInterface, FilmesService } from './filmesservice';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-filmes',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './filmes.html',
   styleUrl: './filmes.css',
 })

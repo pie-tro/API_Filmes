@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DiretoresInterface, DiretoresService } from './diretores-service';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-diretores',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './diretores.html',
   styleUrl: './diretores.css',
 })
