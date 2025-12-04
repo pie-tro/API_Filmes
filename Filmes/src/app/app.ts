@@ -5,7 +5,7 @@ import { Filmes } from "./filmes/filmes";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Filmes],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

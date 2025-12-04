@@ -5,16 +5,17 @@ import { Observable } from 'rxjs';
 export interface DiretoresInterface {
   _id?: string;
   nome: string;
-  idade: number;
-  curso: string;
-  notas: number[];
+  nacionalidade: string;
+  data_nascimento: string;
+  estilo: string;
+  ativo: boolean;
 }
 @Injectable({
   providedIn: 'root',
 })
 export class DiretoresService {
   private http = inject(HttpClient);
-  private base = `http://localhost:3000/filmes`;
+  private base = `http://localhost:3000/diretor`;
 
   listar():Observable<DiretoresInterface[]>{
     return this.http.get<DiretoresInterface[]>(this.base);

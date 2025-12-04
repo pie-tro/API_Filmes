@@ -7,16 +7,20 @@
             <input [(ngModel)]="nome" name="nome" required/>
         </div>
         <div>
-            <label for="">Idade</label>
-            <input type="number" [(ngModel)]="idade" name="idade" required=/>
+            <label for="">Nacionalidade</label>
+            <input [(ngModel)]="nacionalidade" name="nacionalidade" required/>
         </div>
         <div>
-            <label for="">Curso</label>
-            <input [(ngModel)]="curso" name="curso" required/>
+            <label for="">data_nascimento</label>
+            <input type="number" [(ngModel)]="data_nascimento" name="data_nascimento" required=/>
         </div>
         <div>
-            <label for="">Notas</label>
-            <input [(ngModel)]="notasCsv" name="notasCsv"/>
+            <label for="">estilo</label>
+            <input [(ngModel)]="estilo" name="estilo" required/>
+        </div>
+        <div>
+            <label for="">ativo</label>
+            <input [(ngModel)]="ativo" name="ativo"/>
         </div>
         <button type="submit" [disabled]="salvando">Salvar</button>
     </form>
@@ -31,13 +35,13 @@
     @if (carregando) {
         <p>Carregando....</p>
     }@else {
-        @if (filmes.length === 0) {
-            <p>Nenhum aluno.</p>
+        @if (diretores.length === 0) {
+            <p>Nenhum diretor.</p>
         }@else {
              <ul>
-             @for (a of filmes; track a._id) {
+             @for (a of diretores; track a._id) {
                 <li>
-                   <strong>{{ a.nome }}</strong> - {{a.idade}} - {{a.curso}}
+                   <strong>{{ a.nome }}</strong> - {{a.data_nascimento}} - {{a.estilo}}
                     <button (click)="excluir(a._id)">Excluir</button>
                 </li>
              }
