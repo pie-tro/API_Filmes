@@ -1,0 +1,47 @@
+<h1>Filmes</h1>
+<section>
+    <h2>Novo filme</h2>
+    <form (ngSubmit)="criar()">
+        <div>
+            <label for="">Nome</label>
+            <input [(ngModel)]="nome" name="nome" required/>
+        </div>
+        <div>
+            <label for="">Idade</label>
+            <input type="number" [(ngModel)]="idade" name="idade" required=/>
+        </div>
+        <div>
+            <label for="">Curso</label>
+            <input [(ngModel)]="curso" name="curso" required/>
+        </div>
+        <div>
+            <label for="">Notas</label>
+            <input [(ngModel)]="notasCsv" name="notasCsv"/>
+        </div>
+        <button type="submit" [disabled]="salvando">Salvar</button>
+    </form>
+    @if (erro) { <p style="color: red">{{erro}}</p> }
+</section>
+
+<hr>
+
+<section>
+    <h2>Lista</h2>
+    <button (click)="carregar()" [disabled]="carregando">Recarregar</button>
+    @if (carregando) {
+        <p>Carregando....</p>
+    }@else {
+        @if (filmes.length === 0) {
+            <p>Nenhum aluno.</p>
+        }@else {
+             <ul>
+             @for (a of filmes; track a._id) {
+                <li>
+                   <strong>{{ a.nome }}</strong> - {{a.idade}} - {{a.curso}}
+                    <button (click)="excluir(a._id)">Excluir</button>
+                </li>
+             }
+            </ul>
+        }
+    }
+</section>
