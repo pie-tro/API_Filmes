@@ -39,10 +39,10 @@
             <p>Nenhum diretor.</p>
         }@else {
              <ul>
-             @for (a of diretores; track a._id) {
+             @for (d of diretores; track d._id) {
                 <li>
-                   <strong>{{ a.nome }}</strong> - {{a.data_nascimento}} - {{a.estilo}}
-                    <button (click)="excluir(a._id)">Excluir</button>
+                   <strong>{{ d.nome }}</strong> - {{d.data_nascimento}} - {{d.estilo}}
+                    <button (click)="excluir(d._id)">Excluir</button>
                 </li>
              }
             </ul>

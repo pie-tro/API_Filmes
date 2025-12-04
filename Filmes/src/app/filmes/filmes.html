@@ -43,10 +43,10 @@
             <p>Nenhum aluno.</p>
         }@else {
              <ul>
-             @for (a of filmes; track a._id) {
+             @for (f of filmes; track f._id) {
                 <li>
-                   <strong>{{ a.titulo }}</strong> - {{a.genero}} - {{a.ano_lancamento}}
-                    <button (click)="excluir(a._id)">Excluir</button>
+                   <strong>{{ f.titulo }}</strong> - {{f.genero}} - {{f.ano_lancamento}}
+                    <button (click)="excluir(f._id)">Excluir</button>
                 </li>
              }
             </ul>
