@@ -1,55 +1,100 @@
-<h1>Filmes</h1>
-<section>
-    <h2>Novo filme</h2>
-    <form (ngSubmit)="criar()">
-        <div>
-            <label for="">Título </label>
-            <input [(ngModel)]="titulo" name="titulo" required/>
-        </div>
-        <div>
-            <label for="">Gênero </label>
-            <input [(ngModel)]="genero" name="genero" required/>
-        </div>
-        <div>
-            <label for="">Ano lançamento </label>
-            <input [(ngModel)]="ano_lancamento" name="ano_lancamento" required/>
-        </div>
-        <div>
-            <label for="">Duração (Minutos) </label>
-            <input [(ngModel)]="duracao_minutos" name="duracao_minutos"/>
-        </div>
-        <div>
-            <label for="">Classificação Indicativa </label>
-            <input [(ngModel)]="classificacao_indicativa" name="classificacao_indicativa"/>
-        </div>
-        <div>
-            <label for="">Assistido </label>
-            <input [(ngModel)]="assistido" name="assistido"/>
-        </div>
-        <button type="submit" [disabled]="salvando">Salvar</button>
-    </form>
-    @if (erro) { <p style="color: red">{{erro}}</p> }
-</section>
+<div class="page-container">
+  <div class="overlay"></div>
 
-<hr>
+  <div class="content-wrapper">
+    
+    <header class="page-header">
+      <h1>Gerenciar <span class="highlight">Filmes</span></h1>
+      <a routerLink="/" class="back-link">← Voltar</a>
+    </header>
 
-<section>
-    <h2>Lista</h2>
-    <button (click)="carregar()" [disabled]="carregando">Recarregar</button>
-    @if (carregando) {
-        <p>Carregando....</p>
-    }@else {
-        @if (filmes.length === 0) {
-            <p>Nenhum aluno.</p>
+    <div class="grid-layout">
+      
+      <section class="glass-card form-section">
+        <h2>Novo filme</h2>
+        <p class="subtitle">Adicione ao catálogo</p>
+        
+        <form (ngSubmit)="criar()" class="movie-form">
+          <div class="input-group">
+            <label>Título</label>
+            <input [(ngModel)]="titulo" name="titulo" required placeholder="Ex: Interestelar"/>
+          </div>
+          
+          <div class="row-group">
+            <div class="input-group">
+              <label>Gênero</label>
+              <input [(ngModel)]="genero" name="genero" required placeholder="Ex: Sci-Fi"/>
+            </div>
+            <div class="input-group">
+              <label>Ano</label>
+              <input type="number" [(ngModel)]="ano_lancamento" name="ano_lancamento" required placeholder="2014"/>
+            </div>
+          </div>
+
+          <div class="row-group">
+            <div class="input-group">
+              <label>Duração (min)</label>
+              <input type="number" [(ngModel)]="duracao_minutos" name="duracao_minutos"/>
+            </div>
+            <div class="input-group">
+              <label>Classificação</label>
+              <input [(ngModel)]="classificacao_indicativa" name="classificacao_indicativa"/>
+            </div>
+          </div>
+
+          <div class="input-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="assistido" name="assistido"/>
+              <span class="checkmark"></span>
+              Já assistido?
+            </label>
+          </div>
+
+          <button type="submit" [disabled]="salvando" class="btn-primary">
+            {{ salvando ? 'Salvando...' : 'Salvar Filme' }}
+          </button>
+          
+          @if (erro) { 
+            <div class="error-msg">{{erro}}</div> 
+          }
+        </form>
+      </section>
+
+      <section class="glass-card list-section">
+        <div class="list-header">
+          <h2>Catálogo</h2>
+          <button (click)="carregar()" [disabled]="carregando" class="btn-icon refresh-btn" title="Recarregar">
+            ↻
+          </button>
+        </div>
+
+        @if (carregando) {
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Carregando filmes...</p>
+          </div>
         }@else {
-             <ul>
-             @for (f of filmes; track f._id) {
-                <li>
-                   <strong>{{ f.titulo }}</strong> - {{f.genero}} - {{f.ano_lancamento}}
-                    <button (click)="excluir(f._id)">Excluir</button>
+          @if (filmes.length === 0) {
+            <div class="empty-state">
+              <p>Nenhum filme cadastrado.</p>
+            </div>
+          }@else {
+            <ul class="movie-list">
+              @for (f of filmes; track f._id) {
+                <li class="movie-item">
+                  <div class="movie-info">
+                    <strong>{{ f.titulo }}</strong>
+                    <span class="movie-details">{{f.genero}} • {{f.ano_lancamento}}</span>
+                  </div>
+                  <button (click)="excluir(f._id)" class="btn-delete" title="Excluir">
+                    🗑️
+                  </button>
                 </li>
-             }
+              }
             </ul>
+          }
         }
-    }
-</section>
+      </section>
+    </div>
+  </div>
+</div>

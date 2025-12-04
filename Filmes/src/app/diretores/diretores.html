@@ -1,51 +1,98 @@
-<h1>Filmes</h1>
-<section>
-    <h2>Novo filme</h2>
-    <form (ngSubmit)="criar()">
-        <div>
-            <label for="">Nome</label>
-            <input [(ngModel)]="nome" name="nome" required/>
-        </div>
-        <div>
-            <label for="">Nacionalidade</label>
-            <input [(ngModel)]="nacionalidade" name="nacionalidade" required/>
-        </div>
-        <div>
-            <label for="">data_nascimento</label>
-            <input type="number" [(ngModel)]="data_nascimento" name="data_nascimento" required=/>
-        </div>
-        <div>
-            <label for="">estilo</label>
-            <input [(ngModel)]="estilo" name="estilo" required/>
-        </div>
-        <div>
-            <label for="">ativo</label>
-            <input [(ngModel)]="ativo" name="ativo"/>
-        </div>
-        <button type="submit" [disabled]="salvando">Salvar</button>
-    </form>
-    @if (erro) { <p style="color: red">{{erro}}</p> }
-</section>
+<div class="page-container">
+  <div class="overlay"></div>
 
-<hr>
+  <div class="content-wrapper">
+    
+    <header class="page-header">
+      <h1>Gerenciar <span class="highlight-blue">Diretores</span></h1>
+      <a routerLink="/" class="back-link">← Voltar</a>
+    </header>
 
-<section>
-    <h2>Lista</h2>
-    <button (click)="carregar()" [disabled]="carregando">Recarregar</button>
-    @if (carregando) {
-        <p>Carregando....</p>
-    }@else {
-        @if (diretores.length === 0) {
-            <p>Nenhum diretor.</p>
+    <div class="grid-layout">
+      
+      <section class="glass-card form-section">
+        <h2>Novo Diretor</h2>
+        <p class="subtitle">Cadastre uma lenda do cinema</p>
+        
+        <form (ngSubmit)="criar()" class="director-form">
+          <div class="input-group">
+            <label>Nome Completo</label>
+            <input [(ngModel)]="nome" name="nome" required placeholder="Ex: Christopher Nolan"/>
+          </div>
+          
+          <div class="row-group">
+            <div class="input-group">
+              <label>Nacionalidade</label>
+              <input [(ngModel)]="nacionalidade" name="nacionalidade" required placeholder="Ex: Britânico"/>
+            </div>
+            <div class="input-group">
+              <label>Data Nascimento (Ano)</label>
+              <input type="number" [(ngModel)]="data_nascimento" name="data_nascimento" required placeholder="1970"/>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Estilo Cinematográfico</label>
+            <input [(ngModel)]="estilo" name="estilo" required placeholder="Ex: Sci-Fi, Suspense, Noir"/>
+          </div>
+
+          <div class="input-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="ativo" name="ativo"/>
+              <span class="checkmark"></span>
+              Diretor Ativo?
+            </label>
+          </div>
+
+          <button type="submit" [disabled]="salvando" class="btn-accent">
+            {{ salvando ? 'Salvando...' : 'Salvar Diretor' }}
+          </button>
+          
+          @if (erro) { 
+            <div class="error-msg">{{erro}}</div> 
+          }
+        </form>
+      </section>
+
+      <section class="glass-card list-section">
+        <div class="list-header">
+          <h2>Cadastrados</h2>
+          <button (click)="carregar()" [disabled]="carregando" class="btn-icon refresh-btn" title="Recarregar">
+            ↻
+          </button>
+        </div>
+
+        @if (carregando) {
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Buscando diretores...</p>
+          </div>
         }@else {
-             <ul>
-             @for (d of diretores; track d._id) {
-                <li>
-                   <strong>{{ d.nome }}</strong> - {{d.data_nascimento}} - {{d.estilo}}
-                    <button (click)="excluir(d._id)">Excluir</button>
+          @if (diretores.length === 0) {
+            <div class="empty-state">
+              <p>Nenhum diretor encontrado.</p>
+            </div>
+          }@else {
+            <ul class="item-list">
+              @for (d of diretores; track d._id) {
+                <li class="item-card">
+                  <div class="item-info">
+                    <strong>{{ d.nome }}</strong>
+                    <span class="item-details">
+                      {{d.nacionalidade}} • {{d.data_nascimento}}
+                      <br>
+                      <span class="style-tag">{{d.estilo}}</span>
+                    </span>
+                  </div>
+                  <button (click)="excluir(d._id)" class="btn-delete" title="Excluir">
+                    🗑️
+                  </button>
                 </li>
-             }
+              }
             </ul>
+          }
         }
-    }
-</section>
+      </section>
+    </div>
+  </div>
+</div>
