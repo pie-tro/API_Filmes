@@ -26,7 +26,7 @@ const filmeSchema = new mongoose.Schema(
     classificacao_indicativa: { type: Number, required: true, min: 0, max: 18 },
     assistido: { type: Boolean, default: false }
   },
-  { collection: 'Filmes', timestamps: true }
+  { collection: 'filmes', timestamps: true }
 );
 
 const Filme = mongoose.model('Filme', filmeSchema, 'Filmes');
@@ -61,7 +61,6 @@ app.get('/filmes/:id', async (req, res) => {
   }
 });
 
-// PATCH is used for partial updates
 app.patch('/filmes/:id', async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id))
@@ -69,8 +68,8 @@ app.patch('/filmes/:id', async (req, res) => {
 
     const filme = await Filme.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body }, // Only update the fields provided in req.body
-      { new: true, runValidators: true } // Return the updated document and run schema validators
+      { $set: req.body }, 
+      { new: true, runValidators: true }
     );
 
     if (!filme) return res.status(404).json({ error: 'Filme não encontrado' });
@@ -81,13 +80,11 @@ app.patch('/filmes/:id', async (req, res) => {
   }
 });
 
-// Keep PUT for full replacement (Optional: Can be removed if PATCH is sufficient)
 app.put('/filmes/:id', async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id))
       return res.status(400).json({ error: 'ID inválido' });
 
-    // Note: This PUT requires the client to send ALL required fields.
     const filme = await Filme.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -119,3 +116,77 @@ app.delete('/filmes/:id', async (req, res) => {
 app.listen(process.env.PORT, () =>
   console.log(`Servidor rodando em http://localhost:${process.env.PORT}`)
 );
+
+const diretorSchema = new mongoose.Schema(
+  {
+    nome: { type: String, required: true, trim: true, minlength: 1 },
+    nacionalidade: { type: String, required: true, trim: true },
+    data_nascimento: { type: Date, required: true },
+    estilo: { type: String, required: true, trim: true },
+    ativo: { type: Boolean, default: true }
+  },
+  { collection: 'diretor', timestamps: true }
+);
+
+const Diretor = mongoose.model('Diretor', diretorSchema, 'Diretores');
+
+app.post('/diretor', async (req, res) => {
+  try {
+    const diretor = await Diretor.create(req.body);
+    res.status(201).json(diretor);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.get('/diretor', async (req, res) => {
+  const diretores = await Diretor.find();
+  res.json(diretores);
+});
+
+app.get('/diretor/:id', async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id))
+      return res.status(400).json({ error: 'ID inválido' });
+
+    const diretor = await Diretor.findById(req.params.id);
+    if (!diretor) return res.status(404).json({ error: 'Diretor não encontrado' });
+
+    res.json(diretor);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/diretor/:id', async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id))
+      return res.status(400).json({ error: 'ID inválido' });
+
+    const diretor = await Diretor.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+
+    if (!diretor) return res.status(404).json({ error: 'Diretor não encontrado' });
+
+    res.json(diretor);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete('/diretor/:id', async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id))
+      return res.status(400).json({ error: 'ID inválido' });
+
+    const diretor = await Diretor.findByIdAndDelete(req.params.id);
+    if (!diretor) return res.status(404).json({ error: 'Diretor não encontrado' });
+
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
